@@ -37,8 +37,10 @@ public class navmesh : MonoBehaviour
    
         if(distanceToWayPoint <= 3f)
         {
-
+            // arrived
             Debug.Log("Near enough");
+
+            //set next destination
             currentWayPointIndex = (currentWayPointIndex + 1) % wayPoint.Count;
         }
 
