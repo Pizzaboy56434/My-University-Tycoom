@@ -12,11 +12,25 @@ public class navmesh : MonoBehaviour
     NavMeshAgent navMeshAgent;
 
     public int currentWayPointIndex = 0;
-    
-    
-    void Start()
+
+
+    IEnumerator Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        // Wait one frame for the Manager to wake up
+        yield return null;
+
+        if (WaypointManager.Instance != null)
+        {
+            wayPoint = WaypointManager.Instance.allWaypoints;
+        }
+
+        if (wayPoint.Count > 0)
+        {
+            currentWayPointIndex = Random.Range(0, wayPoint.Count);
+            navMeshAgent.speed = Random.Range(3.0f, 4.5f);
+        }
     }
 
     // Update is called once per frame
