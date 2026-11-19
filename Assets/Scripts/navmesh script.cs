@@ -5,14 +5,11 @@ using UnityEngine.AI;
 
 public class navmesh : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public List<Transform> wayPoint;
-
     NavMeshAgent navMeshAgent;
-
     public int currentWayPointIndex = 0;
 
+    public float waypointTolerance = 1.5f;
 
     IEnumerator Start()
     {
@@ -33,7 +30,6 @@ public class navmesh : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         Walking();
@@ -41,25 +37,44 @@ public class navmesh : MonoBehaviour
 
     void Walking()
     {
-        
-        if (wayPoint.Count == 0)
-        {
+        if (wayPoint.Count == 0 || !navMeshAgent.isOnNavMesh)
             return;
-        }
 
-        float distanceToWayPoint = Vector3.Distance(wayPoint[currentWayPointIndex].position, transform.position);
-   
-        if(distanceToWayPoint <= 3f)
+        // Check if we are close enough to the destination
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 1.0f)
         {
-            // arrived
-            Debug.Log("Near enough");
-
-            //set next destination
+            // Move to the next waypoint index
             currentWayPointIndex = (currentWayPointIndex + 1) % wayPoint.Count;
-        }
 
-        navMeshAgent.SetDestination(wayPoint[currentWayPointIndex].position);
-    
+            // Set the new destination (this function now includes the room logic)
+            SetNewDestination();
+        }
     }
 
+    void SetNewDestination()
+    {
+        Vector3 targetPos;
+
+        // If rooms exist, 70% chance they walk to a room, 30% chance they patrol
+        if (WaypointManager.Instance != null && WaypointManager.Instance.roomWaypoints.Count > 0 && Random.value > 0.3f)
+        {
+            // Pick a random room
+            int randomRoom = Random.Range(0, WaypointManager.Instance.roomWaypoints.Count);
+            targetPos = WaypointManager.Instance.roomWaypoints[randomRoom].position;
+        }
+        else
+        {
+            // Go to a standard waypoint
+            targetPos = wayPoint[currentWayPointIndex].position;
+        }
+
+        // Random offset so they don't crowd
+        Vector3 randomOffset = new Vector3(
+            Random.Range(-waypointTolerance, waypointTolerance),
+            0,
+            Random.Range(-waypointTolerance, waypointTolerance)
+        );
+
+        navMeshAgent.SetDestination(targetPos + randomOffset);
+    }
 }
