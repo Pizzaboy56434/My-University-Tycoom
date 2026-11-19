@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1788926
 RectTransform:
   m_ObjectHideFlags: 0
@@ -478,13 +478,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6367861, y: -0.2004447, z: 0.03823181, w: 0.74354815}
-  m_LocalPosition: {x: 6, y: 47.5, z: -5.6}
-  m_LocalScale: {x: 0, y: 1, z: 1}
+  m_LocalRotation: {x: 0.75563234, y: -0.19082987, z: 0.07227523, w: 0.6223987}
+  m_LocalPosition: {x: -7.55, y: 41.29, z: 13.49}
+  m_LocalScale: {x: 0, y: 1, z: 1.1028}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 74.215, y: -66.459, z: -46.839}
+  m_LocalEulerAnglesHint: {x: 75.51, y: -149.146, z: -127.527}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +935,7 @@ MonoBehaviour:
   - {fileID: 1620213515}
   - {fileID: 315278416}
   - {fileID: 1836455990}
+  roomWaypoints: []
 --- !u!4 &549395881
 Transform:
   m_ObjectHideFlags: 0
