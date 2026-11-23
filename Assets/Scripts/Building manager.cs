@@ -23,7 +23,6 @@ public class BuildingManager : MonoBehaviour
     {
         mainCam = Camera.main;
 
-        // Hide the build menu at the start of the game
         if (buildMenuPanel != null)
         {
             buildMenuPanel.SetActive(false);
@@ -32,7 +31,6 @@ public class BuildingManager : MonoBehaviour
 
     void Update()
     {
-        // Player clicks with Left Mouse Button
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
@@ -40,59 +38,52 @@ public class BuildingManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                // If we clicked a plot of land
                 if (hit.collider.CompareTag("Plot"))
                 {
                     currentSelectedPlot = hit.collider.gameObject;
-                    buildMenuPanel.SetActive(true); // Show the menu
+                    buildMenuPanel.SetActive(true);
                 }
             }
         }
     }
 
-    // --- These functions are linked to your UI buttons ---
-
-    public void BuildClassroom()
-    {
-        BuildRoom(classroomPrefab);
-    }
-
-    public void BuildLibrary()
-    {
-        BuildRoom(libraryPrefab);
-    }
-
-    public void BuildCanteen()
-    {
-        BuildRoom(canteenPrefab);
-    }
+    public void BuildClassroom() { BuildRoom(classroomPrefab); }
+    public void BuildLibrary() { BuildRoom(libraryPrefab); }
+    public void BuildCanteen() { BuildRoom(canteenPrefab); }
 
     void BuildRoom(GameObject roomPrefab)
     {
-        // If no plot is selected, do nothing
         if (currentSelectedPlot == null) return;
 
-        // 1. Spawn the room on top of the empty plot
         Vector3 spawnPos = currentSelectedPlot.transform.position;
-        spawnPos.y += 0.1f; // Raise it slightly so it sits on the floor
+        spawnPos.y += 0.1f;
 
         if (roomPrefab != null)
         {
-            Instantiate(roomPrefab, spawnPos, Quaternion.identity);
+            // 1. Spawn the room
+            GameObject newRoom = Instantiate(roomPrefab, spawnPos, Quaternion.identity);
 
-            // Count the new room so the students can see it
+            // 2. Tell the room where its plot was, so it can respawn it later
+            ClickableRoom roomScript = newRoom.GetComponent<ClickableRoom>();
+            if (roomScript != null)
+            {
+                roomScript.plotPosition = currentSelectedPlot.transform.position;
+                roomScript.plotRotation = currentSelectedPlot.transform.rotation;
+            }
+
+            // 3. Count the new room
             if (roomPrefab == classroomPrefab) numberOfClassrooms++;
             if (roomPrefab == libraryPrefab) numberOfLibraries++;
             if (roomPrefab == canteenPrefab) numberOfCanteens++;
         }
 
-        // 2. Delete the empty plot so we can't build on it again
+        // 4. Delete the empty plot
         Destroy(currentSelectedPlot);
 
-        // 3. Hide the menu
+        // 5. Hide the menu
         buildMenuPanel.SetActive(false);
 
-        // 4. Spawn the students!
+        // 6. Spawn the students
         if (spawnerScript != null)
         {
             spawnerScript.SpawnStudent();

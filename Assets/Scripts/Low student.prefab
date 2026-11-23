@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::navmesh
   wayPoint: []
   currentWayPointIndex: 0
+  waypointTolerance: 1.5
 --- !u!114 &8925800001574760591
 MonoBehaviour:
   m_ObjectHideFlags: 0
