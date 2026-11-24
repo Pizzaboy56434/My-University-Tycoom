@@ -5,7 +5,9 @@ public class RatingSystem : MonoBehaviour
 {
     public TextMeshProUGUI ratingText;
     public BuildingManager buildManager;
-    public float campusCapacity = 10f;
+
+    [Header("Formula Settings")]
+    public float campusCapacity = 4f; // Set this to 4 in the Inspector
 
     void Update()
     {
@@ -19,7 +21,7 @@ public class RatingSystem : MonoBehaviour
 
         float totalHappiness = 0f;
         float averageHappiness = 0f;
-
+        
         // 3. Calculate Average Happiness
         if (students.Length > 0)
         {
@@ -31,18 +33,21 @@ public class RatingSystem : MonoBehaviour
             averageHappiness = totalHappiness / students.Length;
         }
 
-        // 4. Apply the Formula
-        float rating = (totalRooms + averageHappiness) / campusCapacity;
+        // 4. Normalize Happiness (turn 0-100 into 0.0-1.0)
+        float normalizedHappiness = averageHappiness / 100f;
 
-        // 5. Determine the Campus Title and Color (The new unique part!)
+        // 5. Apply the Formula
+        float rating = (totalRooms + normalizedHappiness) / campusCapacity;
+
+        // 6. Determine the Campus Title and Color
         string campusTitle = "";
 
-        if (rating < 2f)
+        if (rating < 4f)
         {
             campusTitle = "Struggling";
             ratingText.color = Color.red;
         }
-        else if (rating >= 2f && rating < 4f)
+        else if (rating >= 4f && rating < 8f)
         {
             campusTitle = "Average";
             ratingText.color = Color.yellow;
@@ -53,7 +58,7 @@ public class RatingSystem : MonoBehaviour
             ratingText.color = Color.green;
         }
 
-        // 6. Update the UI
+        // 7. Update the UI
         ratingText.text = "Rating: " + rating.ToString("F1") + " (" + campusTitle + ")";
     }
 }

@@ -8,13 +8,15 @@ public class RoomManager : MonoBehaviour
     public GameObject menuPanel;
 
     [Header("Prefabs")]
-    public GameObject plotPrefab; // Drag your Plot Prefab here!
+    public GameObject plotPrefab;
+
+    [Header("References")]
+    public BuildingManager buildManager; // Drag your GameManager here
 
     private GameObject selectedRoom;
 
     void Awake()
     {
-        // This lets the rooms find this script
         Instance = this;
     }
 
@@ -25,8 +27,6 @@ public class RoomManager : MonoBehaviour
         if (menuPanel != null)
         {
             menuPanel.SetActive(true);
-            // Optional: If you don't want it at the mouse, delete the line below
-            // menuPanel.transform.position = Input.mousePosition; 
         }
     }
 
@@ -34,23 +34,41 @@ public class RoomManager : MonoBehaviour
     {
         if (selectedRoom != null)
         {
-            // 1. Get the room's script to find out where the plot used to be
-            ClickableRoom roomScript = selectedRoom.GetComponent<ClickableRoom>();
-
-            // 2. Spawn a new plot at that exact spot
-            if (roomScript != null && plotPrefab != null)
+            // 1. Subtract the room count
+            if (buildManager != null)
             {
-                Instantiate(plotPrefab, roomScript.plotPosition, roomScript.plotRotation);
+                if (selectedRoom.name.Contains("Classroom")) buildManager.numberOfClassrooms--;
+                if (selectedRoom.name.Contains("Library")) buildManager.numberOfLibraries--;
+                if (selectedRoom.name.Contains("Canteen")) buildManager.numberOfCanteens--;
+            }
+
+            // 2. Get the room's script and SAVE the position BEFORE we destroy it
+            ClickableRoom roomScript = selectedRoom.GetComponent<ClickableRoom>();
+            Vector3 spawnPos = Vector3.zero;
+            Quaternion spawnRot = Quaternion.identity;
+
+            if (roomScript != null)
+            {
+                spawnPos = roomScript.plotPosition;
+                spawnRot = roomScript.plotRotation;
             }
 
             // 3. Destroy the room
             Destroy(selectedRoom);
+
+            // 4. NOW spawn the new plot at the saved position
+            if (plotPrefab != null)
+            {
+                Instantiate(plotPrefab, spawnPos, spawnRot);
+            }
         }
 
-        // 4. Hide the menu
+        // 5. Clear the selection
+        selectedRoom = null;
+
+        // 6. Hide the menu
         if (menuPanel != null) menuPanel.SetActive(false);
     }
-
     public void RotateRoom()
     {
         if (selectedRoom != null)
@@ -61,6 +79,7 @@ public class RoomManager : MonoBehaviour
 
     public void CloseMenu()
     {
+        selectedRoom = null; // Clear the selection!
         if (menuPanel != null) menuPanel.SetActive(false);
     }
 }

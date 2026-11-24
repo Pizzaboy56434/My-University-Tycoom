@@ -7,6 +7,9 @@ public class BuildingManager : MonoBehaviour
     public GameObject libraryPrefab;
     public GameObject canteenPrefab;
 
+    [Header("Teacher Prefab")]
+    public GameObject teacherPrefab;
+
     [Header("References")]
     public GameObject buildMenuPanel;
     public StudentSpawner spawnerScript;
@@ -15,6 +18,7 @@ public class BuildingManager : MonoBehaviour
     public int numberOfClassrooms = 0;
     public int numberOfLibraries = 0;
     public int numberOfCanteens = 0;
+
 
     private GameObject currentSelectedPlot;
     private Camera mainCam;
@@ -87,6 +91,12 @@ public class BuildingManager : MonoBehaviour
         if (spawnerScript != null)
         {
             spawnerScript.SpawnStudent();
+        }
+        if (roomPrefab == classroomPrefab && teacherPrefab != null)
+        {
+            Vector3 teacherSpawnPos = spawnPos + new Vector3(5, 1, 5);
+            Instantiate(teacherPrefab, teacherSpawnPos, Quaternion.identity);
+            Debug.Log("A teacher has spawned and has been hired!");
         }
     }
 }
