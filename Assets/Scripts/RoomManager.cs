@@ -34,42 +34,26 @@ public class RoomManager : MonoBehaviour
     {
         if (selectedRoom != null)
         {
-            // 1. Subtract the room count
-            if (buildManager != null)
-            {
-                if (selectedRoom.name.Contains("Classroom")) buildManager.numberOfClassrooms--;
-                if (selectedRoom.name.Contains("Library")) buildManager.numberOfLibraries--;
-                if (selectedRoom.name.Contains("Canteen")) buildManager.numberOfCanteens--;
-            }
-
-            // 2. Get the ClickableRoom script and SAVE the position
+            // 1. Get the room's script
             ClickableRoom roomScript = selectedRoom.GetComponent<ClickableRoom>();
 
+            // 2. Subtract the correct room count
+            if (buildManager != null && roomScript != null)
+            {
+                if (roomScript.roomType == "Classroom") buildManager.numberOfClassrooms--;
+                if (roomScript.roomType == "Library") buildManager.numberOfLibraries--;
+                if (roomScript.roomType == "Canteen") buildManager.numberOfCanteens--;
+            }
+
+            // 3. Respawn the plot and destroy the room
             if (roomScript != null)
             {
-                Vector3 savedPos = roomScript.plotPosition;
-                Quaternion savedRot = roomScript.plotRotation;
-
-                // 3. Hide the room first so it disappears visually
-                selectedRoom.SetActive(false);
-
-                // 4. Spawn the plot at the saved position
-                if (plotPrefab != null)
-                {
-                    Instantiate(plotPrefab, savedPos, savedRot);
-                }
-
-                // 5. NOW destroy the room
-                Destroy(selectedRoom);
+                roomScript.DestroyAndRespawnPlot();
             }
-            else
-            {
-                Destroy(selectedRoom);
-            }
+
+            selectedRoom = null;
         }
 
-        // 6. Clear and hide
-        selectedRoom = null;
         if (menuPanel != null) menuPanel.SetActive(false);
     }
     public void RotateRoom()

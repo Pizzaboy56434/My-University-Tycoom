@@ -167,4 +167,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StudentStats
   standard: 0
-  happiness: 100
+  happiness: 10

@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112cac309068afe42a4e1bba6d41c5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickableRoom
+  roomType: Canteen
   plotPosition: {x: 0, y: 0, z: 0}
   plotRotation: {x: 0, y: 0, z: 0, w: 0}
   plotPrefab: {fileID: 2566058579524326203, guid: cdf469d2aab1d594095cb33f1e62bf32, type: 3}

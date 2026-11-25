@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ClickableRoom : MonoBehaviour
 {
+    public string roomType;
     public Vector3 plotPosition;
     public Quaternion plotRotation;
     public GameObject plotPrefab;
