@@ -10,13 +10,21 @@ public class RoomPoint : MonoBehaviour
         {
             WaypointManager.Instance.AddRoomPoint(hangoutSpot);
 
-            // ADD THIS LINE:
             Debug.Log("Room registered! Total rooms: " + WaypointManager.Instance.roomWaypoints.Count);
         }
         else
         {
-            // ADD THIS LINE:
             Debug.LogError("RoomPoint failed! Manager exists: " + (WaypointManager.Instance != null) + " Spot exists: " + (hangoutSpot != null));
+        }
+    }
+
+    // NEW: Remove the room from the list when it is deleted
+    void OnDestroy()
+    {
+        if (WaypointManager.Instance != null && hangoutSpot != null)
+        {
+            WaypointManager.Instance.roomWaypoints.Remove(hangoutSpot);
+            Debug.Log("Room removed! Total rooms remaining: " + WaypointManager.Instance.roomWaypoints.Count);
         }
     }
 }

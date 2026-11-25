@@ -42,31 +42,34 @@ public class RoomManager : MonoBehaviour
                 if (selectedRoom.name.Contains("Canteen")) buildManager.numberOfCanteens--;
             }
 
-            // 2. Get the room's script and SAVE the position BEFORE we destroy it
+            // 2. Get the ClickableRoom script and SAVE the position
             ClickableRoom roomScript = selectedRoom.GetComponent<ClickableRoom>();
-            Vector3 spawnPos = Vector3.zero;
-            Quaternion spawnRot = Quaternion.identity;
 
             if (roomScript != null)
             {
-                spawnPos = roomScript.plotPosition;
-                spawnRot = roomScript.plotRotation;
+                Vector3 savedPos = roomScript.plotPosition;
+                Quaternion savedRot = roomScript.plotRotation;
+
+                // 3. Hide the room first so it disappears visually
+                selectedRoom.SetActive(false);
+
+                // 4. Spawn the plot at the saved position
+                if (plotPrefab != null)
+                {
+                    Instantiate(plotPrefab, savedPos, savedRot);
+                }
+
+                // 5. NOW destroy the room
+                Destroy(selectedRoom);
             }
-
-            // 3. Destroy the room
-            Destroy(selectedRoom);
-
-            // 4. NOW spawn the new plot at the saved position
-            if (plotPrefab != null)
+            else
             {
-                Instantiate(plotPrefab, spawnPos, spawnRot);
+                Destroy(selectedRoom);
             }
         }
 
-        // 5. Clear the selection
+        // 6. Clear and hide
         selectedRoom = null;
-
-        // 6. Hide the menu
         if (menuPanel != null) menuPanel.SetActive(false);
     }
     public void RotateRoom()

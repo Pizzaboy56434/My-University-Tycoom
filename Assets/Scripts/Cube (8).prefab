@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1831040323355731040}
   - component: {fileID: 1813405007811204215}
   - component: {fileID: 4360470815019671685}
+  - component: {fileID: 3577072203541482573}
   m_Layer: 0
   m_Name: Cube (8)
   m_TagString: Untagged
@@ -34,7 +35,8 @@ Transform:
   m_LocalPosition: {x: -0.04, y: 2.16, z: -12.91}
   m_LocalScale: {x: 3.6872342, y: 3.7423785, z: 5.867207}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3525936621348794096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3706258774308584710
@@ -165,3 +167,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112cac309068afe42a4e1bba6d41c5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickableRoom
+  plotPosition: {x: 0, y: 0, z: 0}
+  plotRotation: {x: 0, y: 0, z: 0, w: 0}
+  plotPrefab: {fileID: 2566058579524326203, guid: cdf469d2aab1d594095cb33f1e62bf32, type: 3}
+--- !u!114 &3577072203541482573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704990646286833427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f28cd746bcab05643b01be86871a8077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomPoint
+  hangoutSpot: {fileID: 3525936621348794096}
+--- !u!1 &6437593919145862653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3525936621348794096}
+  m_Layer: 0
+  m_Name: RoomHangSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3525936621348794096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6437593919145862653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.578, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3019437121323967097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
