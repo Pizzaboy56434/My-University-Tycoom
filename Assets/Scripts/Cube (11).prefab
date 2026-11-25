@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomPoint
   hangoutSpot: {fileID: 5457878081392696651}
+  roomType: Canteen
 --- !u!1 &2388345052693277036
 GameObject:
   m_ObjectHideFlags: 0

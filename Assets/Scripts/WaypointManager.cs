@@ -17,4 +17,16 @@ public class WaypointManager : MonoBehaviour
     {
         roomWaypoints.Add(roomTransform);
     }
+    public Transform GetRoomByType(string type)
+    {
+        foreach (Transform room in roomWaypoints)
+        {
+            RoomPoint point = room.GetComponentInParent<RoomPoint>();
+            if (point != null && point.roomType == type)
+            {
+                return room;
+            }
+        }
+        return null;
+    }
 }

@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomPoint
   hangoutSpot: {fileID: 3525936621348794096}
+  roomType: Library
 --- !u!1 &6437593919145862653
 GameObject:
   m_ObjectHideFlags: 0

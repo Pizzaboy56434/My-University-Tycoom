@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   hangoutSpot: {fileID: 2313494298549999753}
+  roomType: Classroom
 --- !u!64 &3237242375874787431
 MeshCollider:
   m_ObjectHideFlags: 0

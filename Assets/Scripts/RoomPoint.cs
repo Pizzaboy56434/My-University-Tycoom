@@ -3,6 +3,7 @@ using UnityEngine;
 public class RoomPoint : MonoBehaviour
 {
     public Transform hangoutSpot;
+    public string roomType;
 
     void Start()
     {

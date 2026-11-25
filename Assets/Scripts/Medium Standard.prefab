@@ -152,8 +152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::navmesh
   wayPoint: []
+  assignments: []
   currentWayPointIndex: 0
-  waypointTolerance: 1.5
+  currentTask: 
+  taskTimer: 0
+  isDoingTask: 0
 --- !u!114 &8925800001574760591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,4 +170,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StudentStats
   standard: 1
-  happiness: 10
+  happiness: 100
