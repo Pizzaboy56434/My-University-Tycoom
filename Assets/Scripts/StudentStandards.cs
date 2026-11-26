@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class StudentStats : MonoBehaviour
 {
+    public float personalSpace = 2f;
     public enum StudentStandard { Low, Medium }
 
     [Header("Student Identity")]
@@ -15,6 +16,7 @@ public class StudentStats : MonoBehaviour
     // Variables to prevent popup spam
     private float messageCooldown = 6f;
     private float currentCooldown = 0f;
+    private float crowdCooldown = 0f;
 
     void Start()
     {
@@ -37,6 +39,7 @@ public class StudentStats : MonoBehaviour
 
         // Count down the cooldown timer
         if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
+        if (crowdCooldown > 0) crowdCooldown -= Time.deltaTime;
 
         if (standard == StudentStandard.Low)
         {
@@ -70,6 +73,30 @@ public class StudentStats : MonoBehaviour
                     PopupManager.Instance.ShowMessage(gameObject.name + ": I need a library to study!");
                     currentCooldown = messageCooldown;
                 }
+            }
+        }
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, personalSpace);
+        int nearbyStudents = 0;
+
+        // 2. Count how many other students are in the bubble
+        foreach (var hitCollider in hitColliders)
+        {
+            StudentStats otherStudent = hitCollider.GetComponent<StudentStats>();
+            if (otherStudent != null && otherStudent != this)
+            {
+                nearbyStudents++;
+            }
+        }
+
+        // 3. If crowded, drain happiness and show a popup
+        if (nearbyStudents >= 1)
+        {
+            happiness -= 3f * Time.deltaTime; // Drain faster than normal
+
+            if (crowdCooldown <= 0 && PopupManager.Instance != null)
+            {
+                PopupManager.Instance.ShowMessage(gameObject.name + ": Too crowded! I need space!");
+                crowdCooldown = 5f;
             }
         }
 
