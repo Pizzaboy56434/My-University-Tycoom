@@ -13,7 +13,7 @@ public class StudentSpawner : MonoBehaviour
         if (studentPrefab == null) return;
 
         // 1. Count how many students are already in the scene
-        // We look for the 'navmesh' script you attached to your student prefab
+   
         int currentStudentCount = Object.FindObjectsByType<navmesh>(FindObjectsSortMode.None).Length;
 
         // 2. Check if we are already at the limit

@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class TeacherAI : MonoBehaviour
 {
+    private TextMeshPro thoughtBubble;
     private NavMeshAgent agent;
     private float waitTimer = 0f;
     private bool isTeaching = false;
 
     void Start()
     {
+        thoughtBubble = GetComponentInChildren<TextMeshPro>();
         Debug.Log("Teacher spawned and is trying to move!");
         agent = GetComponent<NavMeshAgent>();
 
@@ -27,6 +30,7 @@ public class TeacherAI : MonoBehaviour
             if (waitTimer <= 0)
             {
                 isTeaching = false;
+                if (thoughtBubble != null) thoughtBubble.text = "I'm going for a walk, classed dismissed!";
                 Debug.Log("Class is over! Teacher is going for a walk.");
                 GoToRandomWaypoint();
             }
@@ -41,6 +45,8 @@ public class TeacherAI : MonoBehaviour
             isTeaching = true;
             waitTimer = 10f;
             agent.ResetPath();
+
+            if (thoughtBubble != null) thoughtBubble.text = "I am teaching!";
         }
     }
 
@@ -55,6 +61,8 @@ public class TeacherAI : MonoBehaviour
 
             // Add a slight offset so they stand NEXT to the room, not inside it
             targetPos += new Vector3(2f, 0, 2f);
+
+            if (thoughtBubble != null) thoughtBubble.text = "I am heading to class now!";
 
             agent.SetDestination(targetPos);
         }
