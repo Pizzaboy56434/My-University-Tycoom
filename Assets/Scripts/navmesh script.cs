@@ -22,13 +22,15 @@ public class navmesh : MonoBehaviour
     private float messageCooldown = 6f;
     private StudentStats stats;
 
+    public float stuckTimer = 0f;
+    private float frustrationCooldown = 0f;
+
+
     IEnumerator Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         stats = GetComponent<StudentStats>();
         thoughtBubble = GetComponentInChildren<TextMeshPro>();
-        // Automatically find the child text object
-     
 
         yield return null;
 
@@ -64,7 +66,46 @@ public class navmesh : MonoBehaviour
             return; // Don't do the walking logic while studying
         }
 
-        // --- 2. IF THEY ARE WALKING ---
+        // --- 2. FRUSTRATION LOGIC ---
+        if (frustrationCooldown > 0) frustrationCooldown -= Time.deltaTime;
+
+        if (currentTask != "" && !isDoingTask)
+        {
+            // They are stuck if they are barely moving OR if they lost their path entirely
+            bool isStuck = (navMeshAgent.velocity.magnitude < 0.1f) || (!navMeshAgent.hasPath && !navMeshAgent.pathPending);
+
+            if (isStuck)
+            {
+                stuckTimer += Time.deltaTime;
+
+                // If they've been stuck for 2 seconds, get frustrated
+                if (stuckTimer > 2f)
+                {
+                    if (stats != null) stats.happiness -= 5f * Time.deltaTime;
+
+                    if (frustrationCooldown <= 0 && PopupManager.Instance != null)
+                    {
+                        PopupManager.Instance.ShowMessage(gameObject.name + ": I'm stuck! Where is the door?");
+                        frustrationCooldown = 6f;
+                    }
+                }
+
+                // If they've been stuck for 10 seconds, they give up and wander
+                if (stuckTimer > 10f)
+                {
+                    currentTask = "";
+                    stuckTimer = 0f;
+                    if (thoughtBubble != null) thoughtBubble.text = "Giving up...";
+                    SetNewDestination();
+                }
+            }
+            else
+            {
+                stuckTimer = 0f; // They are moving fine
+            }
+        }
+
+        // --- 3. IF THEY ARE WALKING ---
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 1.0f)
         {
             // They arrived at their destination
@@ -74,9 +115,7 @@ public class navmesh : MonoBehaviour
                 isDoingTask = true;
                 taskTimer = 5f; // Study for 5 seconds
 
-                // NEW: Update the thought bubble to show they are studying
                 if (thoughtBubble != null) thoughtBubble.text = "Studying in " + currentTask;
-
                 Debug.Log(gameObject.name + " is now in the " + currentTask);
             }
             else
@@ -121,10 +160,9 @@ public class navmesh : MonoBehaviour
         }
         else
         {
+            // NEW: Don't clear currentTask here! Let the frustration logic handle it.
             if (thoughtBubble != null) thoughtBubble.text = "Where is the " + currentTask + "?";
             Debug.LogWarning("Could not find a room of type: " + currentTask);
-            currentTask = "";
-            SetNewDestination();
         }
     }
 

@@ -35,10 +35,19 @@ public class BuildingManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        // 1. Check for mouse click (PC) OR touch (Mobile)
+        bool clicked = Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
+
+        if (clicked)
         {
-            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            // 2. Get the position of the click or touch
+            Vector3 inputPos = Input.mousePosition;
+            if (Input.touchCount > 0) inputPos = Input.GetTouch(0).position;
+
+            // 3. Shoot the ray from that position
+            Ray ray = mainCam.ScreenPointToRay(inputPos);
             RaycastHit hit;
+            
 
             if (Physics.Raycast(ray, out hit))
             {
