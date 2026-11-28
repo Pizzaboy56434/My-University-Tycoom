@@ -3854,7 +3854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
   classroomPrefab: {fileID: 4976360038854685108, guid: 342e6e7ac1b1484408cb4f5b658213ec, type: 3}
   libraryPrefab: {fileID: 4976360038854685108, guid: ec3829700718792428f098466f71bf87, type: 3}
-  canteenPrefab: {fileID: 1190161761242663226, guid: fc2f1f11c4acfc143981efa3467709fe, type: 3}
+  canteenPrefab: {fileID: 4976360038854685108, guid: 62c3ca650e122ea4c800635732a33e7e, type: 3}
   teacherPrefab: {fileID: 7472327422355206011, guid: 940275c86f40d3043ab5baf99c2eddf6, type: 3}
   buildMenuPanel: {fileID: 1788925}
   spawnerScript: {fileID: 1224520029}
